@@ -1,11 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="game.css">
+    <style>
+        body {
+            background-color: rgb(35, 35, 58);
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .container {
+            height: 70vh;
+            border: 2px sold white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game {
+            height: 60vmin;
+            width: 60vmin;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+
+        }
+
+        .box {
+            height: 18vmin;
+            width: 18vmin;
+            border-radius: 15px;
+            font-size: 8vw;
+            background-color: aliceblue;
+            color: brown;
+            border: none;
+        }
+
+        .box:hover {
+            background-color: rgb(228, 236, 235);
+        }
+
+        #b {
+            padding: 10px;
+            background-color: black;
+            color: aliceblue;
+            font-size: medium;
+            font-weight: bold;
+            border: 1px solid white;
+            border-radius: 10px;
+        }
+
+        #b:hover {
+            background-color: aliceblue;
+            color: black;
+            transition-duration: 500ms;
+        }
+
+        .win {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            color: white;
+        }
+    </style>
 </head>
+
 <body>
     <h1 class="win"></h1>
     <main>
@@ -25,6 +92,59 @@
         </div>
         <button id="b">Reset Game</button>
     </main>
-    <script src="./game.js"></script>
+    <script>
+        let boxes = document.querySelectorAll('.box')
+        let reset = document.querySelector('#b')
+        let winner = document.querySelector('.win')
+        let turnO = true
+        const winParten = [
+            [0, 1, 2],
+            [0, 3, 6],
+            [0, 4, 8],
+            [1, 4, 7],
+            [2, 5, 8],
+            [2, 4, 6],
+            [3, 4, 5],
+            [6, 7, 8]
+        ]
+        checkWinner = () => {
+            for (parten of winParten) {
+                // console.log(parten[0],parten[1],parten[2]);
+                // console.log(boxes[parten[0]].innerHTML,boxes[parten[1]].innerHTML,boxes[parten[2]].innerHTML);
+                let pos1Value = boxes[parten[0]].innerHTML
+                let pos2Value = boxes[parten[1]].innerHTML
+                let pos3Value = boxes[parten[2]].innerHTML
+                if (pos1Value != "" && pos2Value != "" && pos3Value != "") {
+                    if (pos1Value === pos2Value && pos2Value === pos3Value) {
+                        winner.innerHTML = `Yoo! ${pos1Value} is The Winner`
+                        boxes.forEach((box) => {
+                            box.disabled = true
+                            box.style.backgroundColor = "blue";
+                        })
+                    }
+                }
+            }
+        }
+        boxes.forEach((box) => {
+            box.addEventListener('click', () => {
+                if (turnO) {
+                    box.innerHTML = "O"
+                    turnO = false
+                } else {
+                    box.innerHTML = "X"
+                    turnO = true
+                }
+                box.disabled = true;
+
+                checkWinner()
+            })
+        })
+
+        reset.addEventListener("click", () => {
+            window.location.reload();
+        });
+
+    </script>
 </body>
+
 </html>
